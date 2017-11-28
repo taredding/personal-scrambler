@@ -1,0 +1,10 @@
+C:\Users\Trevor\Documents\Personal Projects\scrambler\bin\Debug\netcoreapp2.0\scrambler.deps.json
+C:\Users\Trevor\Documents\Personal Projects\scrambler\bin\Debug\netcoreapp2.0\scrambler.runtimeconfig.json
+C:\Users\Trevor\Documents\Personal Projects\scrambler\bin\Debug\netcoreapp2.0\scrambler.runtimeconfig.dev.json
+C:\Users\Trevor\Documents\Personal Projects\scrambler\bin\Debug\netcoreapp2.0\scrambler.dll
+C:\Users\Trevor\Documents\Personal Projects\scrambler\bin\Debug\netcoreapp2.0\scrambler.pdb
+C:\Users\Trevor\Documents\Personal Projects\scrambler\obj\Debug\netcoreapp2.0\scrambler.csproj.CoreCompileInputs.cache
+C:\Users\Trevor\Documents\Personal Projects\scrambler\obj\Debug\netcoreapp2.0\scrambler.AssemblyInfoInputs.cache
+C:\Users\Trevor\Documents\Personal Projects\scrambler\obj\Debug\netcoreapp2.0\scrambler.AssemblyInfo.cs
+C:\Users\Trevor\Documents\Personal Projects\scrambler\obj\Debug\netcoreapp2.0\scrambler.dll
+C:\Users\Trevor\Documents\Personal Projects\scrambler\obj\Debug\netcoreapp2.0\scrambler.pdb
