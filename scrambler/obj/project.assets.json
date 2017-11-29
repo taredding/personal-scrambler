@@ -670,11 +670,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Trevor\\Documents\\Personal Projects\\scrambler\\scrambler.csproj",
+      "projectUniqueName": "c:\\Users\\Trevor\\git\\personal-scrambler\\scrambler\\scrambler.csproj",
       "projectName": "scrambler",
-      "projectPath": "C:\\Users\\Trevor\\Documents\\Personal Projects\\scrambler\\scrambler.csproj",
+      "projectPath": "c:\\Users\\Trevor\\git\\personal-scrambler\\scrambler\\scrambler.csproj",
       "packagesPath": "C:\\Users\\Trevor\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Trevor\\Documents\\Personal Projects\\scrambler\\obj\\",
+      "outputPath": "c:\\Users\\Trevor\\git\\personal-scrambler\\scrambler\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

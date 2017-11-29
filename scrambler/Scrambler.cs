@@ -8,13 +8,14 @@ namespace scrambler
     class Scrambler
     {
         /// <summary>
-        ///   This is the mai method that launches the scrambler progam
+        ///   This is the main method that launches the scrambler progam
         /// </summary>
         /// <param name="args">
         ///   The list of command line arguments
         /// </param>
         static void Main(string[] args)
         {
+            getSubstitutionTable("myKey");
             if (args.Length != 3) {
                 usagePrint();
                 return;
@@ -31,10 +32,10 @@ namespace scrambler
             }
 
             if (args[0].Equals("-s") ) {
-                scramble(input, args[2]);
+                scramble(ref input, args[2]);
             }
             else if (args[0].Equals("-u")) {
-                unscramble(input, args[2]);
+                unscramble(ref input, args[2]);
             }
             else {
                 usagePrint();
@@ -67,26 +68,48 @@ namespace scrambler
         ///   This method unscrambles a file given a key
         /// </summary>
         /// <param name="bytes">
-        ///   The bytes from the file to unscramble
+        ///   The bytes from the file to unscramble, passed by reference
         /// </param>
         /// <param name="key">
         ///   The key used to unscramble the file
         /// </param>
-        private static void unscramble(byte[] bytes, String key) {
-
+        private static void unscramble(ref byte[] bytes, String key) {
+            
         }
         /// <summary>
         ///   This method scrambles a file using a given key
         /// </summary>
         /// <param name="bytes">
-        ///   The bytes from the file to scramble
+        ///   The bytes from the file to scramble, passed by reference
         /// </param>
         /// <param name="key">
         ///   The key used to scramble the file
         /// </param> 
 
-        private static void scramble(byte[] bytes, String key) {
+        private static void scramble(ref byte[] bytes, String key) {
 
+        }
+        /// <summary>
+        ///   Generates a byte substitution table based on a key.
+        /// </summary>
+        /// <param name="keyVal">
+        ///   The key to generate the table based off of.
+        /// </param>
+        private static byte[] getSubstitutionTable(String keyVal) {
+            char[] key = keyVal.ToCharArray();
+            byte[] subTable = new byte[256];
+            
+            byte i = 0x00;
+            //this do while loop is used to prevent an infinite loop while also initializing all values from 0-255
+            do {
+                //creates the substitution table using a Vigenere Cipher
+                subTable[i] = (byte)(i + key[(int)(i%key.Length)]);
+                Console.Write((char)subTable[i]);
+                i++;
+            } while (i != 0x00);
+
+            System.IO.File.WriteAllBytes("output.txt", bytes: subTable);
+            return subTable;
         }
     }
 }
