@@ -15,7 +15,9 @@ namespace scrambler
         /// </param>
         static void Main(string[] args)
         {
-            getSubstitutionTable("myKey");
+            byte[] temp = System.IO.File.ReadAllBytes("input.txt");
+            scramble(ref temp, "myKey");
+            System.IO.File.WriteAllBytes("output.txt", temp);
             if (args.Length != 3) {
                 usagePrint();
                 return;
@@ -50,7 +52,7 @@ namespace scrambler
         private static void usagePrint(){
             Console.WriteLine("usage: dotnet run [task] [filename] [key]\n task:\n -s to scramble a file\n -u to unscramble");
             Console.WriteLine("filename: the input file to read");
-            Console.WriteLine("key: the key used to scramble or unscramble your file contents.");
+            Console.WriteLine("key: the key used to scramble or unscramble your file contents (maximum length of 256).");
         }
         /// <summary>
         ///   Writes an array of bytes to a file
@@ -86,8 +88,18 @@ namespace scrambler
         ///   The key used to scramble the file
         /// </param> 
 
-        private static void scramble(ref byte[] bytes, String key) {
+        private static void scramble(ref byte[] bytes, String keyVal) {
+            char[] key = keyVal.ToCharArray();
 
+            byte[] subTable = getSubstitutionTable(key);
+
+            for (int i = 0; i < bytes.Length; i++) {
+                //substitute out each byte with the value from the substitution table
+                bytes[i] = subTable[bytes[i]];
+                //Using key to encrypt file's bytes using Vigenere Cipher
+                bytes[i] += (byte)key[i%key.Length];
+                
+            }
         }
         /// <summary>
         ///   Generates a byte substitution table based on a key.
@@ -95,21 +107,25 @@ namespace scrambler
         /// <param name="keyVal">
         ///   The key to generate the table based off of.
         /// </param>
-        private static byte[] getSubstitutionTable(String keyVal) {
-            char[] key = keyVal.ToCharArray();
+        private static byte[] getSubstitutionTable(char[] key) {
             byte[] subTable = new byte[256];
             
             byte i = 0x00;
+            byte smallKey = 0x00;
+            for (byte c = 1; c <= key.Length; c++) {
+                smallKey += (byte)(key[c - 1] ^ c);
+            }
+
+
+            i = 0x00;
             //this do while loop is used to prevent an infinite loop while also initializing all values from 0-255
             do {
-                //creates the substitution table using a Vigenere Cipher
-                subTable[i] = (byte)(i + key[(int)(i%key.Length)]);
-                Console.Write((char)subTable[i]);
+                //creates the substitution table using the additive method
+                subTable[i] = (byte)(i + smallKey);
                 i++;
             } while (i != 0x00);
-
-            System.IO.File.WriteAllBytes("output.txt", bytes: subTable);
             return subTable;
         }
+
     }
 }
