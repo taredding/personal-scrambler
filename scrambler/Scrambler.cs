@@ -7,6 +7,8 @@ namespace scrambler
 {
     class Scrambler
     {
+        //number of times to repeat scrambling process
+        public const int NUM_ITERATIONS = 10;
         /// <summary>
         ///   This is the main method that launches the scrambler progam
         /// </summary>
@@ -15,9 +17,6 @@ namespace scrambler
         /// </param>
         static void Main(string[] args)
         {
-            byte[] temp = System.IO.File.ReadAllBytes("input.txt");
-            scramble(ref temp, "myKey");
-            System.IO.File.WriteAllBytes("output.txt", temp);
             if (args.Length != 3) {
                 usagePrint();
                 return;
@@ -89,16 +88,19 @@ namespace scrambler
         /// </param> 
 
         private static void scramble(ref byte[] bytes, String keyVal) {
-            char[] key = keyVal.ToCharArray();
+            for (int iteration = 0; iteration < NUM_ITERATIONS; iteration++) {
+                char[] key = keyVal.ToCharArray();
 
-            byte[] subTable = getSubstitutionTable(key);
+                byte[] subTable = getSubstitutionTable(key);
 
-            for (int i = 0; i < bytes.Length; i++) {
-                //substitute out each byte with the value from the substitution table
-                bytes[i] = subTable[bytes[i]];
-                //Using key to encrypt file's bytes using Vigenere Cipher
-                bytes[i] += (byte)key[i%key.Length];
-                
+                for (int i = 0; i < bytes.Length; i++) {
+                    //substitute out each byte with the value from the substitution table
+                    bytes[i] = subTable[bytes[i]];
+                    //Using key to encrypt file's bytes using Vigenere Cipher
+                    bytes[i] += (byte)key[i%key.Length];
+                    
+                }
+                rotateBits(key, ref bytes);
             }
         }
         /// <summary>
@@ -125,6 +127,22 @@ namespace scrambler
                 i++;
             } while (i != 0x00);
             return subTable;
+        }
+        /// <summary>
+        ///   Rotates bits in the bytes in a similar manner to the Vigenere Cipher
+        /// </summary>
+        /// <param name="key">
+        ///   The key used to base rotations off of
+        /// </param>
+        /// <param name="bytes">
+        ///   The bytes to manipulate
+        /// </param>
+        private static void rotateBits(char[] key, ref byte[] bytes) {
+            for (int i = 0; i < bytes.Length; i++) {
+                for (int j = 0; j < key[i%key.Length]; j++) {
+                    bytes[i] = (byte)((bytes[i] >> 7) | ((bytes[i] & 0x7f) << 1));
+                }
+            }
         }
 
     }
