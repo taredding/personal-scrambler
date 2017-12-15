@@ -18,11 +18,7 @@ namespace scrambler
         /// </param>
         static void Main(string[] args)
         {
-            byte[] test = System.IO.File.ReadAllBytes("input.txt");
-            scramble(ref test, "myKey");
-            unscramble(ref test, "mykey");
-            System.IO.File.WriteAllBytes("output.txt", test);
-            if (args.Length != 3) {
+            if (args.Length != 4) {
                 usagePrint();
                 return;
             }
@@ -38,12 +34,16 @@ namespace scrambler
             }
 
             if (args[0].Equals("-s") ) {
-                scramble(ref input, args[2]);
-                System.IO.File.WriteAllBytes("output.txt", input);
+                for (int i = 0; i < NUM_ITERATIONS; i++) {
+                    scramble(ref input, args[2]);
+                }
+                System.IO.File.WriteAllBytes(args[3], input);
             }
             else if (args[0].Equals("-u")) {
-                unscramble(ref input, args[2]);
-                System.IO.File.WriteAllBytes("output.txt", input);
+                for (int i = 0; i < NUM_ITERATIONS; i++) {
+                    unscramble(ref input, args[2]);
+                }
+                System.IO.File.WriteAllBytes(args[3], input);
             }
             else {
                 usagePrint();
@@ -57,9 +57,10 @@ namespace scrambler
         ///   via command line properly
         /// </summary>
         private static void usagePrint(){
-            Console.WriteLine("usage: dotnet run [task] [filename] [key]\n task:\n -s to scramble a file\n -u to unscramble");
-            Console.WriteLine("filename: the input file to read");
+            Console.WriteLine("usage: dotnet run [task] [infilename] [key] [outfilename]\n task:\n -s to scramble a file\n -u to unscramble");
+            Console.WriteLine("infilename: the input file to read");
             Console.WriteLine("key: the key used to scramble or unscramble your file contents (maximum length of 256).");
+            Console.WriteLine("outfilename: the key used to scramble or unscramble your file contents (maximum length of 256).");
         }
         /// <summary>
         ///   This method unscrambles a file given a key
