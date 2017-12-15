@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
  /// <summary>
  ///   This program scrambles or unscrambles a file using a given key
@@ -17,6 +18,10 @@ namespace scrambler
         /// </param>
         static void Main(string[] args)
         {
+            byte[] test = System.IO.File.ReadAllBytes("input.txt");
+            scramble(ref test, "myKey");
+            unscramble(ref test, "mykey");
+            System.IO.File.WriteAllBytes("output.txt", test);
             if (args.Length != 3) {
                 usagePrint();
                 return;
@@ -34,13 +39,16 @@ namespace scrambler
 
             if (args[0].Equals("-s") ) {
                 scramble(ref input, args[2]);
+                System.IO.File.WriteAllBytes("output.txt", input);
             }
             else if (args[0].Equals("-u")) {
                 unscramble(ref input, args[2]);
+                System.IO.File.WriteAllBytes("output.txt", input);
             }
             else {
                 usagePrint();
             }
+            
 
         }
         /// <summary>
@@ -54,18 +62,6 @@ namespace scrambler
             Console.WriteLine("key: the key used to scramble or unscramble your file contents (maximum length of 256).");
         }
         /// <summary>
-        ///   Writes an array of bytes to a file
-        /// </summary>
-        /// <param name="toWrite">
-        ///   The bytes to write to the output file
-        /// </param>
-        /// <param name="fileName">
-        ///   The name of the output file
-        /// </param>
-        private static void writeChar(byte[] toWrite, String fileName) {
-
-        }
-        /// <summary>
         ///   This method unscrambles a file given a key
         /// </summary>
         /// <param name="bytes">
@@ -74,8 +70,17 @@ namespace scrambler
         /// <param name="key">
         ///   The key used to unscramble the file
         /// </param>
-        private static void unscramble(ref byte[] bytes, String key) {
-            
+        private static void unscramble(ref byte[] bytes, String keyStr) {
+            char[] key = keyStr.ToCharArray();
+            byte[] subTable = getReverseSubstitutionTable(key);
+
+                unRotateBits(key, ref bytes);
+                
+
+                for (int i = 0; i < bytes.Length; i++) {
+                    bytes[i] -= (byte)key[i%key.Length];
+                    bytes[i] = subTable[bytes[i]];
+                }
         }
         /// <summary>
         ///   This method scrambles a file using a given key
@@ -88,20 +93,33 @@ namespace scrambler
         /// </param> 
 
         private static void scramble(ref byte[] bytes, String keyVal) {
-            for (int iteration = 0; iteration < NUM_ITERATIONS; iteration++) {
-                char[] key = keyVal.ToCharArray();
+           
+            char[] key = keyVal.ToCharArray();
 
-                byte[] subTable = getSubstitutionTable(key);
+            byte[] subTable = getSubstitutionTable(key);
 
-                for (int i = 0; i < bytes.Length; i++) {
-                    //substitute out each byte with the value from the substitution table
-                    bytes[i] = subTable[bytes[i]];
-                    //Using key to encrypt file's bytes using Vigenere Cipher
-                    bytes[i] += (byte)key[i%key.Length];
-                    
-                }
-                rotateBits(key, ref bytes);
+            for (int i = 0; i < bytes.Length; i++) {
+                //substitute out each byte with the value from the substitution table
+                bytes[i] = subTable[bytes[i]];
+                //Using key to encrypt file's bytes using Vigenere Cipher
+                bytes[i] += (byte)key[i%key.Length];
+                
             }
+            rotateBits(key, ref bytes);
+        }
+        /// <summary>
+        ///   Returns a small, byte sized key based on a full key to be used for a couple sub processes.!--
+        /// </summary>
+        /// <param name="key">
+        ///   The key to generate the small key based off of.
+        /// </param>
+        private static byte getSmallKey (char[] key) {
+            byte i = 0x00;
+            byte smallKey = 0x00;
+            for (byte c = 1; c <= key.Length; c++) {
+                smallKey += (byte)(key[c - 1] ^ c);
+            }
+            return i;
         }
         /// <summary>
         ///   Generates a byte substitution table based on a key.
@@ -129,7 +147,25 @@ namespace scrambler
             return subTable;
         }
         /// <summary>
-        ///   Rotates bits in the bytes in a similar manner to the Vigenere Cipher
+        ///   Generates a table to reverse a substituition.
+        /// </summary>
+        /// <param name="keyVal">
+        ///   The key to generate the table based off of.
+        /// </param>
+        private static byte[] getReverseSubstitutionTable(char[] key) {
+            byte[] subTable = getSubstitutionTable(key);
+            byte [] revTable = new byte[subTable.Length];
+            byte smallKey = getSmallKey(key);
+            byte i = 0x00;
+            do {
+                //swap the position and value of everything in array
+                revTable[subTable[i]] = i;
+                i++;
+            } while (i != 0x00);
+            return revTable;
+        }
+        /// <summary>
+        ///   Rotates bits in the bytes to the right in a similar manner to the Vigenere Cipher, to the left
         /// </summary>
         /// <param name="key">
         ///   The key used to base rotations off of
@@ -141,6 +177,23 @@ namespace scrambler
             for (int i = 0; i < bytes.Length; i++) {
                 for (int j = 0; j < key[i%key.Length]; j++) {
                     bytes[i] = (byte)((bytes[i] >> 7) | ((bytes[i] & 0x7f) << 1));
+                }
+            }
+        }
+
+        /// <summary>
+        ///   Rotates bits in the bytes in a similar manner to the Vigenere Cipher, to the right
+        /// </summary>
+        /// <param name="key">
+        ///   The key used to base rotations off of
+        /// </param>
+        /// <param name="bytes">
+        ///   The bytes to manipulate
+        /// </param>
+        private static void unRotateBits(char[] key, ref byte[] bytes) {
+            for (int i = 0; i < bytes.Length; i++) {
+                for (int j = 0; j < key[i%key.Length]; j++) {
+                    bytes[i] = (byte)((bytes[i] << 7) | ((bytes[i] & 0xfe) >> 1));
                 }
             }
         }
