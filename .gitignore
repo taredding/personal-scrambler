@@ -1,4 +1,4 @@
-# This file was written by kmorcinek, not taredding
+# This file was originally written by kmorcinek, not taredding
 # Download this file using PowerShell v3 under Windows with the following comand:
 # Invoke-WebRequest https://gist.githubusercontent.com/kmorcinek/2710267/raw/ -OutFile .gitignore
 # or wget:
@@ -208,3 +208,5 @@ $RECYCLE.BIN/
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)
 #####
+*.jpg
+*.txt
