@@ -82,14 +82,15 @@ namespace Scrambler
         /// <param name="outFile">
         ///   The name of the scrambled file to output
         /// </param>
-        /// <param name="key">
+        /// <param name="keyStr">
         ///   The key used to scramble the file
         /// </param> 
 
-        public static void scramble(String inFile, String outFile, String keyVal)
+        public static void scramble(String inFile, String outFile, String keyStr)
         {
+            validateKey(keyStr);
             byte[] bytes = readFile(inFile);
-            char[] key = keyVal.ToCharArray();
+            char[] key = keyStr.ToCharArray();
 
             byte[] subTable = getSubstitutionTable(key);
 
@@ -112,6 +113,7 @@ namespace Scrambler
         /// <param name="keyStr">The key to be used to unscramble the file with. </param>
         public static void unscramble(String inFile, String outFile, String keyStr)
         {
+            validateKey(keyStr);
             byte[] bytes = readFile(inFile);
 
             char[] key = keyStr.ToCharArray();
@@ -126,6 +128,15 @@ namespace Scrambler
                 bytes[i] = subTable[bytes[i]];
             }
             writeFile(outFile, bytes);
+        }
+        /// <summary>
+        /// Validates that a given key is valid to use in the scrambling/unscrambling process
+        /// </summary>
+        /// <param name="key">The key to validate</param>
+        private static void validateKey(String key) {
+            if (key.Length == 0) {
+                throw new ArgumentException("Please enter a key.");
+            }
         }
         /// <summary>
         ///   Returns a small, byte sized key based on a full key to be used for a couple sub processes.!--
