@@ -195,7 +195,6 @@
             this.MinimumSize = new System.Drawing.Size(844, 312);
             this.Name = "ScramblerGUI";
             this.Text = "Scrambler";
-            this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);

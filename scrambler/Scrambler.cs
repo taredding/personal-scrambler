@@ -10,7 +10,10 @@ using System.Windows.Forms;
  ///   This program scrambles or unscrambles a file using a given key
  /// <summary>
 namespace Scrambler
-{
+{   
+    /// <summary>
+    /// This class handles basic (weak) encryption and decryption of files using keys (strings of letters)
+    /// </summary>
     class Scrambler
     {
         //number of times to repeat scrambling process
