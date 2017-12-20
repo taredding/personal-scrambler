@@ -27,7 +27,11 @@ namespace Scrambler
 
         private void button_encrypt_Click(object sender, EventArgs e)
         {
+            
             label_error.Text = "";
+            if (!validateOverwrite(out_file_textBox.Text)) {
+                return;
+            }
             try
             {
                 Scrambler.scramble(in_file_textbox.Text, out_file_textBox.Text, textBox_key.Text);
@@ -41,6 +45,10 @@ namespace Scrambler
         private void button_decrypt_Click(object sender, EventArgs e)
         {
             label_error.Text = "";
+            if (!validateOverwrite(out_file_textBox.Text))
+            {
+                return;
+            }
             try
             {
                 Scrambler.unscramble(in_file_textbox.Text, out_file_textBox.Text, textBox_key.Text);
@@ -50,6 +58,14 @@ namespace Scrambler
             {
                 label_error.Text = "Error unscrambling file: " + ex.Message;
             }
+        }
+
+        private Boolean validateOverwrite(String filename) {
+            Boolean valid = true;
+            if (System.IO.File.Exists(filename)) {
+                valid = (MessageBox.Show("Are you sure you want to overwrite " + filename + "?", "File already exists", MessageBoxButtons.YesNo) == DialogResult.Yes);
+            }
+            return valid;
         }
 
 
@@ -62,9 +78,25 @@ namespace Scrambler
             }
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void in_file_textbox_TextChanged(object sender, EventArgs e)
         {
+            if (in_file_textbox.Text.Length == 0)
+            {
+                button_auto_fill.Enabled = false;
+            }
+            else {
+                button_auto_fill.Enabled = true;
+            }
+        }
 
+        private void button_auto_fill_Click(object sender, EventArgs e)
+        {
+            String dir = in_file_textbox.Text;
+            int trimPos = Math.Max(in_file_textbox.Text.LastIndexOf("\\"), in_file_textbox.Text.LastIndexOf("/"));
+            if (trimPos > 0) {
+                dir = dir.Substring(0, trimPos + 1);
+            }
+            out_file_textBox.Text = dir;
         }
     }
 }

@@ -42,6 +42,7 @@
             this.button_decrypt = new System.Windows.Forms.Button();
             this.button_encrypt = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.button_auto_fill = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -49,11 +50,11 @@
             // button_input
             // 
             this.button_input.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_input.Location = new System.Drawing.Point(692, 17);
+            this.button_input.Location = new System.Drawing.Point(693, 20);
             this.button_input.Name = "button_input";
-            this.button_input.Size = new System.Drawing.Size(100, 33);
+            this.button_input.Size = new System.Drawing.Size(116, 30);
             this.button_input.TabIndex = 2;
-            this.button_input.Text = "browse";
+            this.button_input.Text = "Browse";
             this.button_input.UseVisualStyleBackColor = true;
             this.button_input.Click += new System.EventHandler(this.button_input_Click);
             // 
@@ -64,15 +65,15 @@
             this.in_file_textbox.Name = "in_file_textbox";
             this.in_file_textbox.Size = new System.Drawing.Size(535, 30);
             this.in_file_textbox.TabIndex = 3;
+            this.in_file_textbox.TextChanged += new System.EventHandler(this.in_file_textbox_TextChanged);
             // 
             // label_error
             // 
-            this.label_error.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.label_error.AutoSize = true;
+            this.label_error.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label_error.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_error.Location = new System.Drawing.Point(359, 203);
+            this.label_error.Location = new System.Drawing.Point(345, 192);
             this.label_error.Name = "label_error";
-            this.label_error.Size = new System.Drawing.Size(0, 25);
+            this.label_error.Size = new System.Drawing.Size(469, 196);
             this.label_error.TabIndex = 4;
             // 
             // textBox_key
@@ -100,7 +101,6 @@
             this.label1.Size = new System.Drawing.Size(118, 29);
             this.label1.TabIndex = 7;
             this.label1.Text = "Input File:";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -125,6 +125,7 @@
             // panel1
             // 
             this.panel1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.panel1.Controls.Add(this.button_auto_fill);
             this.panel1.Controls.Add(this.in_file_textbox);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.button_input);
@@ -134,7 +135,7 @@
             this.panel1.Controls.Add(this.out_file_textBox);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(802, 147);
+            this.panel1.Size = new System.Drawing.Size(812, 147);
             this.panel1.TabIndex = 10;
             // 
             // button_decrypt
@@ -171,6 +172,18 @@
             this.panel2.Size = new System.Drawing.Size(317, 78);
             this.panel2.TabIndex = 11;
             // 
+            // button_auto_fill
+            // 
+            this.button_auto_fill.Enabled = false;
+            this.button_auto_fill.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_auto_fill.Location = new System.Drawing.Point(693, 56);
+            this.button_auto_fill.Name = "button_auto_fill";
+            this.button_auto_fill.Size = new System.Drawing.Size(116, 30);
+            this.button_auto_fill.TabIndex = 10;
+            this.button_auto_fill.Text = "Same Dir.";
+            this.button_auto_fill.UseVisualStyleBackColor = true;
+            this.button_auto_fill.Click += new System.EventHandler(this.button_auto_fill_Click);
+            // 
             // ScramblerGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -187,7 +200,6 @@
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -206,6 +218,7 @@
         private System.Windows.Forms.Button button_decrypt;
         private System.Windows.Forms.Button button_encrypt;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Button button_auto_fill;
     }
 }
 
